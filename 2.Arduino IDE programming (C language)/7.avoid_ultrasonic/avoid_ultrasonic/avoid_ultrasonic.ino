@@ -320,7 +320,7 @@ void Distance_test()
   {
     Distance();
     //Filter out data greater than 500 or smaller than 0 in the test distance
-    while (distance >= 500)
+    while (distance >= 600)
     {
       brake(0);
       Distance();

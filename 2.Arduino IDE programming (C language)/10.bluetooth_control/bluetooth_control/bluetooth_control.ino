@@ -728,7 +728,7 @@ void Distance()
   while (num < 5)
   {
     Distance_test();
-    while (distance >= 500 || distance == 0)
+    while (distance >= 600 || distance == 0)
     {
       brake();
       Distance_test();
