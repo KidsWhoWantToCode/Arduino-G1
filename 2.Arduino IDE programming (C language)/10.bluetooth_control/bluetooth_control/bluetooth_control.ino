@@ -9,6 +9,12 @@
 * @par History  
 *
 */
+
+#include <PID_v2.h>
+double Kp = 2, Ki = 5, Kd = 1;
+PID_v2 myPID(Kp, Ki, Kd, PID::Direct);
+
+
 #define run_car     '1'
 #define back_car    '2'
 #define left_car    '3'
@@ -121,6 +127,9 @@ void printf_begin(void)
 */
 void setup()
 {
+    myPID.Start(0,  // input
+              0,                      // current output
+              CarSpeedControl);                   // setpoint
   Serial.begin(9600);
   printf_begin();
   //Initialize the motor drive IO as the output mode
@@ -286,17 +295,35 @@ void track_get_value()
 * @retval        void
 * @par History   
 */
+
 void run()
 {
+//  #define PIN_INPUT 0
+//  #define PIN_OUTPUT 3
+
+// Specify the links and initial tuning parameters
+
+
   //Left motor advance
   digitalWrite(Left_motor_go, HIGH);  
   digitalWrite(Left_motor_back, LOW); 
-  analogWrite(Left_motor_pwm, CarSpeedControl);
-
+  
   //Right motor advance
   digitalWrite(Right_motor_go, HIGH);  
   digitalWrite(Right_motor_back, LOW); 
-  analogWrite(Right_motor_pwm, CarSpeedControl);
+
+
+  const double input = 0;
+  double speed = 0; 
+  //while (CarSpeedControl != speed){
+  speed = myPID.Run(CarSpeedControl);
+  analogWrite(Left_motor_pwm, speed);
+  analogWrite(Right_motor_pwm, speed);
+  //}
+ // analogWrite(PIN_OUTPUT, output);
+
+
+
 }
 
 /**
